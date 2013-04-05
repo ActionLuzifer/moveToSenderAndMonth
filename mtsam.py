@@ -62,25 +62,28 @@ def checkForPath(path):
 
 
 def loadDescription():
-    descriptionFile = open("descript.ion", "r")
     description = {}
-    sstr = descriptionFile.readline().lstrip().rstrip()
-    while sstr != "":
-        if sstr[0] == '"':
-            stelle = sstr.find('"',2)
-            print("#"+sstr[1:stelle]+"### -> ###"+sstr[stelle+2:]+"#")
-            description[sstr[1:stelle]] = sstr[stelle+2:]
-        else:
-            stelle = sstr.find(" ",2)
-            description[sstr[:stelle]] = sstr[stelle+1:]
-
+    descfilename = os.path.normpath("descript.ion")
+    if os.path.exists(descfilename):
+        descriptionFile = open(descfilename, "r")
         sstr = descriptionFile.readline().lstrip().rstrip()
-    descriptionFile.close()
+        while sstr != "":
+            if sstr[0] == '"':
+                stelle = sstr.find('"',2)
+                print("#"+sstr[1:stelle]+"### -> ###"+sstr[stelle+2:]+"#")
+                description[sstr[1:stelle]] = sstr[stelle+2:]
+            else:
+                stelle = sstr.find(" ",2)
+                description[sstr[:stelle]] = sstr[stelle+1:]
+    
+            sstr = descriptionFile.readline().lstrip().rstrip()
+        descriptionFile.close()
     return description
 
 
 def writeDescription(_path, _filename, _description):
-    descriptionFile = open(os.path.normpath(_path+"/descript.ion"), "a")
+    descfilename = os.path.normpath(_path+"/descript.ion")
+    descriptionFile = open(descfilename, "a")
     if " " in _filename:
         line = '"'+_filename+'" '+_description
     else:
