@@ -5,6 +5,7 @@ Created on 04.04.2013
 '''
 import os
 import re
+import sys
 
 class Month(object):
     
@@ -92,6 +93,22 @@ def writeDescription(_path, _filename, _description):
     descriptionFile.close()
 
 
+def getNewName(args, year, month, sender):
+    if len(args) > 1:
+        arg = args[1]
+        if "ts" in arg:
+            path = os.path.normpath(year+"-"+month+"/"+sender)
+        elif "st" in arg:
+            path = os.path.normpath(sender+"/"+year+"-"+month)
+        elif "t" in arg:
+            path = os.path.normpath(year+"-"+month)
+        elif "s" in arg:
+            path = os.path.normpath(sender)                
+    else:
+        path = os.path.normpath(year+"-"+month+"/"+sender)
+    return path
+
+
 if __name__ == '__main__':
     years = {}
     files = os.listdir(".")
@@ -113,7 +130,7 @@ if __name__ == '__main__':
             print("      MON: "+str(m[0]))
             for s in m[1].items():
                 print("          sender: "+str(s[0]))
-                path = os.path.normpath(str(y[0])+"-"+str(m[0])+"/"+"/"+str(s[0]))
+                path = getNewName(sys.argv, str(y[0]), str(m[0]), str(s[0]))
                 checkForPath(path)
                 print(path)
                 for filename in s[1]:
@@ -122,4 +139,5 @@ if __name__ == '__main__':
                         print("                    #"+str(filename)+"#")
                         print("                   ->"+description)
                         writeDescription(path, filename, description)
-                    os.renames(filename, os.path.normpath(path+"/"+filename))
+                    print(os.path.normpath(path+"/"+filename))
+                    #os.renames(filename, os.path.normpath(path+"/"+filename))
