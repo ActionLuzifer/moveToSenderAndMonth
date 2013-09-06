@@ -140,4 +140,4 @@ if __name__ == '__main__':
                         print("                   ->"+description)
                         writeDescription(path, filename, description)
                     print(os.path.normpath(path+"/"+filename))
-                    #os.renames(filename, os.path.normpath(path+"/"+filename))
+                    os.renames(filename, os.path.normpath(path+"/"+filename))
